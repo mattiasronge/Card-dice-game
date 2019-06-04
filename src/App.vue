@@ -23,146 +23,62 @@
 <script>
 export default {
   name: "app",
-  data() {
-    return {
-      classp: true,
-      flagRed: false,
-      flagBlue: false,
-      start: false,
-      imgs: "",
-      user: 0,
-      system: 0,
-      st: "",
-      number: 0,
-
-      ranks: ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
-      values: [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      suits: ['♥','♦','♠','♣'],
-      cards: [],
-      selected_card: null,
-      suitColor: {
-        '♠': 'black',
-        '♣': 'black',
-        '♦': 'red',
-        '♥': 'red',
+  //   data: function () {
+  //         return {
+  //             newTodo: '',
+  //     }
+  // },
+  computed: {
+      classp () {
+          return this.$store.getters.classp;
       },
-      shuffleSpeed: 'shuffleMedium',
-      shuffleTypes: ['Slow', 'Medium', 'Fast'],
-      isDeckShuffled: false,
-      shuffleCount: 0,
-    };
+      flagRed () {
+          return this.$store.getters.flagRed;
+      },
+      flagBlue () {
+          return this.$store.getters.flagBlue;
+      },
+      imgs () {
+          return this.$store.getters.imgs;
+      },
+      st () {
+          return this.$store.getters.st;
+      },
+      selected_card () {
+          return this.$store.getters.selected_card;
+      },
+      suitColor () {
+          return this.$store.getters.suitColor;
+      },
+    
+
+
   },
   methods: {
     genRandom() {
 
-       let snd = new Audio('../audio/ONEDICE.WAV')
-       snd.play()
-      let num = Math.floor(Math.random() * 6) + 1;
-      this.number = num;
-
-      switch (num) {
-        case 1:
-          this.imgs = "../images/1.png";
-          this.st = {
-            border: "4px doubled #1abc9c"
-          };
-          this.user += num;
-
-          break;
-        case 2:
-          this.imgs = "../images/2.png";
-          this.user += num;
-          this.st = {
-            border: "4px dotted #2ecc71"
-          };
-          break;
-
-        case 3:
-          this.imgs = "../images/3.png";
-          this.user += num;
-          this.st = {
-            border: "4px dotted #3498db"
-          };
-          break;
-
-        case 4:
-          this.imgs = "../images/4.png";
-          this.user += num;
-          this.st = {
-            border: "4px dotted rgba(239, 87, 119,1.0)"
-          };
-          break;
-
-        case 5:
-          this.imgs = "../images/5.png";
-          this.user += num;
-          this.st = {
-            border: "4px dotted #e74c3c"
-          };
-          break;
-
-        case 6:
-          this.imgs = "../images/6.png";
-          this.user += num;
-          this.st = {
-            border: "4px dotted #ecf0f1"
-          };
-          break;
-      }
-
-      this.shuffleDeck();
+      let snd = new Audio('../audio/ONEDICE.WAV');
+      snd.play();
+      this.$store.dispatch('genRandom');
+      this.$store.dispatch('shuffleDeck');
     },
     displayInitialDeck() {
-      let id = 1;
-      this.cards = [];
-
-      for( let s = 0; s < this.suits.length; s++ ) {
-        for( let r = 0; r < this.ranks.length; r++ ) {
-          let card = {
-            id: id,
-            rank: this.ranks[r],
-            suit: this.suits[s],
-            value: this.values[r]
-          }
-          this.cards.push(card);
-          id++;
-        }
-      }
-
-      this.isDeckShuffled = false;
-      this.shuffleCount = 0;
-      
-      this.system = 0;
-      this.user = 0;
-      this.imgs = null;
-      this.st = null;
-      this.selected_card = this.cards[1];
+      this.$store.dispatch('displayInitialDeck');
     },
-    shuffleDeck() {        
-      for(let i = this.cards.length - 1; i > 0; i--) {
-        let randomIndex = Math.floor(Math.random() * i);
-        
-        let temp = this.cards[i];
-        this.cards[i] = this.cards[randomIndex];
-        this.cards[randomIndex] = temp;
-      }
-
-      this.selected_card = this.cards[1];
-
-      if (this.suitColor[this.selected_card.suit] == 'red' && (this.selected_card.value + this.number) % 2 == 0) this.flagRed = true;
-      else this.flagRed = false;
-      
-      if (this.suitColor[this.selected_card.suit] == 'black' && (this.selected_card.value + this.number) % 2 == 1) this.flagBlue = true;
-      else this.flagBlue = false;
-      
-
-      this.isDeckShuffled = true;
-      this.shuffleCount = this.shuffleCount + 1;
-    }
   },
   created() {
     this.displayInitialDeck();
-  }
+  },
+  updated () {
+      // let classp = this.$store.getters.classp;
+      // let flagRed = this.$store.getters.flagRed;
+      // let flagBlue = this.$store.getters.flagBlue;
+      // let imgs = this.$store.getters.imgs;
+      // let st = this.$store.getters.st;
+      // let selected_card = this.$store.getters.selected_card;
+      // let suitColor = this.$store.getters.suitColor;
+
+  },  
 };
 </script>
 

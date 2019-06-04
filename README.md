@@ -1,4 +1,4 @@
-# Card and Dice game using Vue js
+# Roll and Dice game using Vue js
 
 > A Vue.js project
 
